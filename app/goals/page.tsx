@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Target, DollarSign, Edit, Trash2, TrendingUp, Award, Clock } from "lucide-react"
+import { Progress } from "@/components/ui/progress"
+import { Plus, Target, Calendar, DollarSign, Edit, Trash2, TrendingUp } from "lucide-react"
 import { type Goal, getGoals, saveGoal, updateGoal, deleteGoal, addContribution } from "@/lib/storage"
 import Navigation from "@/components/navigation"
 import { formatCurrency } from "@/lib/utils"
@@ -136,49 +137,36 @@ export default function Goals() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-50">
       <Navigation />
 
-      <div className="p-8 max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Metas Financeiras
-            </h1>
-            <p className="text-gray-400 mt-2">Defina e acompanhe seus objetivos financeiros</p>
-          </div>
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Metas Financeiras</h1>
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
-              <Button
-                className="tech-gradient hover:glow-effect transition-all duration-300"
-                onClick={() => setEditingGoal(null)}
-              >
+              <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => setEditingGoal(null)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Nova Meta
               </Button>
             </DialogTrigger>
-            <DialogContent className="glass-card border-white/20 text-white sm:max-w-md">
+            <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle className="text-xl font-semibold">{editingGoal ? "Editar Meta" : "Nova Meta"}</DialogTitle>
+                <DialogTitle>{editingGoal ? "Editar Meta" : "Nova Meta"}</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmitGoal} className="space-y-4">
                 <div>
-                  <Label htmlFor="name" className="text-gray-300">
-                    Nome da Meta
-                  </Label>
+                  <Label htmlFor="name">Nome da Meta</Label>
                   <Input
                     id="name"
                     name="name"
                     required
                     defaultValue={editingGoal?.name || ""}
                     placeholder="Ex: Viagem para Europa"
-                    className="glass-card border-white/20 text-white"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="targetAmount" className="text-gray-300">
-                    Valor Alvo
-                  </Label>
+                  <Label htmlFor="targetAmount">Valor Alvo</Label>
                   <Input
                     id="targetAmount"
                     name="targetAmount"
@@ -187,23 +175,19 @@ export default function Goals() {
                     min="0.01"
                     required
                     defaultValue={editingGoal?.targetAmount || ""}
-                    className="glass-card border-white/20 text-white"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="deadline" className="text-gray-300">
-                    Prazo
-                  </Label>
+                  <Label htmlFor="deadline">Prazo</Label>
                   <Input
                     id="deadline"
                     name="deadline"
                     type="date"
                     required
                     defaultValue={editingGoal?.deadline || ""}
-                    className="glass-card border-white/20 text-white"
                   />
                 </div>
-                <Button type="submit" className="w-full tech-gradient hover:glow-effect transition-all duration-300">
+                <Button type="submit" className="w-full">
                   {editingGoal ? "Atualizar" : "Criar"} Meta
                 </Button>
               </form>
@@ -212,12 +196,12 @@ export default function Goals() {
         </div>
 
         {/* Filters */}
-        <div className="mb-8">
+        <div className="mb-6">
           <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-64 glass-card border-white/20 text-white">
+            <SelectTrigger className="w-48">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="glass-card border-white/20">
+            <SelectContent>
               <SelectItem value="all">Todas as metas</SelectItem>
               <SelectItem value="active">Metas ativas</SelectItem>
               <SelectItem value="completed">Metas concluídas</SelectItem>
@@ -234,44 +218,29 @@ export default function Goals() {
             const isCompleted = goal.isCompleted || progress >= 100
 
             return (
-              <Card
-                key={goal.id}
-                className={`glass-card tech-border hover:glow-effect transition-all duration-300 ${isCompleted ? "border-green-500/30" : ""}`}
-              >
+              <Card key={goal.id} className={`${isCompleted ? "border-green-500 bg-green-50" : ""}`}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <CardTitle className="text-xl text-white flex items-center">
-                        {isCompleted ? (
-                          <Award className="w-5 h-5 text-green-400 mr-2" />
-                        ) : (
-                          <Target className="w-5 h-5 text-blue-400 mr-2" />
-                        )}
-                        {goal.name}
-                      </CardTitle>
-                      <div className="flex items-center text-sm text-gray-400 mt-2">
-                        <Clock className="w-4 h-4 mr-1" />
+                    <div>
+                      <CardTitle className="text-lg">{goal.name}</CardTitle>
+                      <div className="flex items-center text-sm text-gray-500 mt-1">
+                        <Calendar className="w-4 h-4 mr-1" />
                         {isOverdue ? (
-                          <span className="text-red-400">{Math.abs(daysRemaining)} dias em atraso</span>
+                          <span className="text-red-600">{Math.abs(daysRemaining)} dias em atraso</span>
                         ) : (
                           <span>{daysRemaining} dias restantes</span>
                         )}
                       </div>
                     </div>
                     <div className="flex space-x-1">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(goal)}
-                        className="glass-card border-white/20 hover:bg-white/10"
-                      >
+                      <Button variant="outline" size="sm" onClick={() => handleEdit(goal)}>
                         <Edit className="w-4 h-4" />
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleDelete(goal.id)}
-                        className="glass-card border-red-500/20 text-red-400 hover:bg-red-500/10"
+                        className="text-red-600 hover:text-red-700"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -279,38 +248,29 @@ export default function Goals() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     <div>
-                      <div className="flex justify-between text-sm mb-3">
-                        <span className="text-gray-300">Progresso</span>
-                        <span className="font-semibold text-blue-400">{progress.toFixed(1)}%</span>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span>Progresso</span>
+                        <span className="font-semibold">{progress.toFixed(1)}%</span>
                       </div>
-                      <div className="w-full bg-gray-700 rounded-full h-3">
-                        <div
-                          className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500 glow-effect"
-                          style={{ width: `${Math.min(progress, 100)}%` }}
-                        />
-                      </div>
+                      <Progress value={Math.min(progress, 100)} className="h-3" />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center p-3 rounded-lg bg-white/5 border border-white/10">
-                        <p className="text-xs text-gray-400 mb-1">Atual</p>
-                        <p className="font-bold text-green-400">{formatCurrency(goal.currentAmount)}</p>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="text-sm text-gray-500">Atual</p>
+                        <p className="font-bold text-green-600">{formatCurrency(goal.currentAmount)}</p>
                       </div>
-                      <div className="text-center p-3 rounded-lg bg-white/5 border border-white/10">
-                        <p className="text-xs text-gray-400 mb-1">Meta</p>
-                        <p className="font-bold text-white">{formatCurrency(goal.targetAmount)}</p>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500">Meta</p>
+                        <p className="font-bold">{formatCurrency(goal.targetAmount)}</p>
                       </div>
                     </div>
 
                     <div className="flex space-x-2">
                       {!isCompleted && (
-                        <Button
-                          onClick={() => openContributionModal(goal)}
-                          className="flex-1 glass-card border-white/20 hover:bg-white/10"
-                          variant="outline"
-                        >
+                        <Button onClick={() => openContributionModal(goal)} className="flex-1" variant="outline">
                           <DollarSign className="w-4 h-4 mr-1" />
                           Contribuir
                         </Button>
@@ -318,30 +278,25 @@ export default function Goals() {
                       {!goal.isCompleted && progress >= 100 && (
                         <Button
                           onClick={() => handleMarkCompleted(goal)}
-                          className="flex-1 success-gradient hover:glow-effect transition-all duration-300"
+                          className="flex-1 bg-green-600 hover:bg-green-700"
                         >
-                          <Award className="w-4 h-4 mr-1" />
+                          <Target className="w-4 h-4 mr-1" />
                           Concluir
                         </Button>
                       )}
                     </div>
 
                     {goal.contributions.length > 0 && (
-                      <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-                        <p className="text-sm font-medium mb-3 text-gray-300 flex items-center">
-                          <TrendingUp className="w-4 h-4 mr-1" />
-                          Últimas contribuições:
-                        </p>
-                        <div className="space-y-2 max-h-24 overflow-y-auto">
+                      <div>
+                        <p className="text-sm font-medium mb-2">Últimas contribuições:</p>
+                        <div className="space-y-1 max-h-20 overflow-y-auto">
                           {goal.contributions
                             .slice(-3)
                             .reverse()
                             .map((contribution) => (
                               <div key={contribution.id} className="flex justify-between text-xs">
-                                <span className="text-gray-400">
-                                  {new Date(contribution.date).toLocaleDateString("pt-BR")}
-                                </span>
-                                <span className="font-medium text-green-400">
+                                <span>{new Date(contribution.date).toLocaleDateString("pt-BR")}</span>
+                                <span className="font-medium text-green-600">
                                   +{formatCurrency(contribution.amount)}
                                 </span>
                               </div>
@@ -358,28 +313,17 @@ export default function Goals() {
 
         {/* Contribution Modal */}
         <Dialog open={isContributionModalOpen} onOpenChange={setIsContributionModalOpen}>
-          <DialogContent className="glass-card border-white/20 text-white sm:max-w-md">
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-xl font-semibold">Adicionar Contribuição</DialogTitle>
-              {selectedGoal && <p className="text-sm text-gray-400">Meta: {selectedGoal.name}</p>}
+              <DialogTitle>Adicionar Contribuição</DialogTitle>
+              {selectedGoal && <p className="text-sm text-gray-500">Meta: {selectedGoal.name}</p>}
             </DialogHeader>
             <form onSubmit={handleSubmitContribution} className="space-y-4">
               <div>
-                <Label htmlFor="amount" className="text-gray-300">
-                  Valor da Contribuição
-                </Label>
-                <Input
-                  id="amount"
-                  name="amount"
-                  type="number"
-                  step="0.01"
-                  min="0.01"
-                  required
-                  placeholder="0,00"
-                  className="glass-card border-white/20 text-white"
-                />
+                <Label htmlFor="amount">Valor da Contribuição</Label>
+                <Input id="amount" name="amount" type="number" step="0.01" min="0.01" required placeholder="0,00" />
               </div>
-              <Button type="submit" className="w-full success-gradient hover:glow-effect transition-all duration-300">
+              <Button type="submit" className="w-full">
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Adicionar Contribuição
               </Button>
