@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 217 91% 60%;
-    --radius: 0.75rem;
+    --background: 248 250 252;
+    --foreground: 15 23 42;
+    --card: 255 255 255;
+    --card-foreground: 15 23 42;
+    --popover: 255 255 255;
+    --popover-foreground: 15 23 42;
+    --primary: 30 64 175;
+    --primary-foreground: 248 250 252;
+    --secondary: 241 245 249;
+    --secondary-foreground: 15 23 42;
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
+    --accent: 241 245 249;
+    --accent-foreground: 15 23 42;
+    --destructive: 239 68 68;
+    --destructive-foreground: 248 250 252;
+    --border: 226 232 240;
+    --input: 226 232 240;
+    --ring: 30 64 175;
+    --radius: 0.5rem;
   }
 }
 
@@ -34,57 +34,94 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
     min-height: 100vh;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
 @layer components {
-  .glass-card {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  .professional-card {
+    @apply bg-white border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200;
+    border-radius: 12px;
   }
 
-  .tech-gradient {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  .professional-gradient {
+    background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
   }
 
-  .success-gradient {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  .success-professional {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
   }
 
-  .danger-gradient {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  .warning-professional {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
   }
 
-  .glow-effect {
-    box-shadow: 0 0 20px rgba(103, 126, 234, 0.3);
+  .danger-professional {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   }
 
-  .tech-border {
-    border: 1px solid rgba(103, 126, 234, 0.2);
+  .professional-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
-  .font-inter {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  .professional-shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .professional-border {
+    border: 1px solid #e2e8f0;
+  }
+
+  .metric-card {
+    @apply bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300;
+  }
+
+  .sidebar-professional {
+    @apply bg-white border-r border-slate-200;
+    box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.1);
   }
 }
 
-/* Custom scrollbar */
+/* Professional scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  background: #f1f5f9;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(103, 126, 234, 0.5);
-  border-radius: 3px;
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(103, 126, 234, 0.7);
+  background: #94a3b8;
+}
+
+/* Typography improvements */
+.heading-primary {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.heading-secondary {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.text-professional {
+  font-weight: 500;
+  color: #334155;
+}
+
+.text-muted-professional {
+  font-weight: 400;
+  color: #64748b;
 }

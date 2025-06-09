@@ -16,13 +16,13 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts"
-import { Download, TrendingUp, TrendingDown, DollarSign, Target, Activity, BarChart3 } from "lucide-react"
+import { Download, TrendingUp, TrendingDown, DollarSign, Target, Activity, BarChart3, Calendar } from "lucide-react"
 import { type Transaction, type Goal, getTransactions, getGoals } from "@/lib/storage"
 import { generatePDF } from "@/lib/pdf"
 import Navigation from "@/components/navigation"
 import { formatCurrency } from "@/lib/utils"
 
-const COLORS = ["#667eea", "#4facfe", "#fa709a", "#fee140", "#764ba2", "#00f2fe"]
+const COLORS = ["#1e40af", "#059669", "#dc2626", "#d97706", "#7c3aed", "#0891b2"]
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -104,30 +104,29 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-50">
       <Navigation />
 
       <div className="p-8 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-8 space-y-4 lg:space-y-0">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Dashboard Financeiro
-            </h1>
-            <p className="text-gray-400 mt-2">Visão geral das suas finanças pessoais</p>
+            <h1 className="text-4xl font-bold text-slate-900 heading-primary">Dashboard Financeiro</h1>
+            <p className="text-slate-600 mt-2 text-lg">Visão geral completa das suas finanças pessoais</p>
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Select value={period} onValueChange={setPeriod}>
-              <SelectTrigger className="w-48 glass-card border-white/20 text-white">
+              <SelectTrigger className="w-full sm:w-48 professional-card">
+                <Calendar className="w-4 h-4 mr-2 text-slate-500" />
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="glass-card border-white/20">
+              <SelectContent className="professional-card">
                 <SelectItem value="month">Último mês</SelectItem>
                 <SelectItem value="3months">Últimos 3 meses</SelectItem>
                 <SelectItem value="year">Último ano</SelectItem>
               </SelectContent>
             </Select>
-            <Button onClick={handleDownloadPDF} className="tech-gradient hover:glow-effect transition-all duration-300">
+            <Button onClick={handleDownloadPDF} className="professional-gradient text-white professional-shadow">
               <Download className="w-4 h-4 mr-2" />
               Relatório PDF
             </Button>
@@ -136,70 +135,74 @@ export default function Dashboard() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="glass-card tech-border hover:glow-effect transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-300">Saldo Total</CardTitle>
-              <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20">
-                <DollarSign className="h-4 w-4 text-blue-400" />
+          <Card className="metric-card">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-600 uppercase tracking-wide">
+                Saldo Total
+              </CardTitle>
+              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+                <DollarSign className="h-5 w-5 text-blue-600" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className={`text-3xl font-bold ${balance >= 0 ? "text-green-400" : "text-red-400"}`}>
+              <div className={`text-3xl font-bold mb-2 ${balance >= 0 ? "text-emerald-600" : "text-red-600"}`}>
                 {formatCurrency(balance)}
               </div>
-              <div className="flex items-center mt-2">
-                <Activity className="w-4 h-4 text-gray-400 mr-1" />
-                <span className="text-xs text-gray-400">Saldo atual</span>
+              <div className="flex items-center text-sm text-slate-500">
+                <Activity className="w-4 h-4 mr-1" />
+                <span>Saldo atual disponível</span>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="glass-card tech-border hover:glow-effect transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-300">Receitas</CardTitle>
-              <div className="p-2 rounded-lg bg-gradient-to-r from-green-500/20 to-blue-500/20">
-                <TrendingUp className="h-4 w-4 text-green-400" />
+          <Card className="metric-card">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Receitas</CardTitle>
+              <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center">
+                <TrendingUp className="h-5 w-5 text-emerald-600" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-green-400">{formatCurrency(totalIncome)}</div>
-              <div className="flex items-center mt-2">
-                <BarChart3 className="w-4 h-4 text-gray-400 mr-1" />
-                <span className="text-xs text-gray-400">Total de entradas</span>
+              <div className="text-3xl font-bold text-emerald-600 mb-2">{formatCurrency(totalIncome)}</div>
+              <div className="flex items-center text-sm text-slate-500">
+                <BarChart3 className="w-4 h-4 mr-1" />
+                <span>Total de entradas no período</span>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="glass-card tech-border hover:glow-effect transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-300">Despesas</CardTitle>
-              <div className="p-2 rounded-lg bg-gradient-to-r from-red-500/20 to-pink-500/20">
-                <TrendingDown className="h-4 w-4 text-red-400" />
+          <Card className="metric-card">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Despesas</CardTitle>
+              <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                <TrendingDown className="h-5 w-5 text-red-600" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-red-400">{formatCurrency(totalExpenses)}</div>
-              <div className="flex items-center mt-2">
-                <BarChart3 className="w-4 h-4 text-gray-400 mr-1" />
-                <span className="text-xs text-gray-400">Total de saídas</span>
+              <div className="text-3xl font-bold text-red-600 mb-2">{formatCurrency(totalExpenses)}</div>
+              <div className="flex items-center text-sm text-slate-500">
+                <BarChart3 className="w-4 h-4 mr-1" />
+                <span>Total de saídas no período</span>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="glass-card tech-border hover:glow-effect transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-300">Taxa de Economia</CardTitle>
-              <div className="p-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20">
-                <Target className="h-4 w-4 text-purple-400" />
+          <Card className="metric-card">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-600 uppercase tracking-wide">
+                Taxa de Economia
+              </CardTitle>
+              <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
+                <Target className="h-5 w-5 text-purple-600" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className={`text-3xl font-bold ${savingsRate >= 0 ? "text-green-400" : "text-red-400"}`}>
+              <div className={`text-3xl font-bold mb-2 ${savingsRate >= 0 ? "text-emerald-600" : "text-red-600"}`}>
                 {savingsRate.toFixed(1)}%
               </div>
-              <div className="flex items-center mt-2">
-                <Activity className="w-4 h-4 text-gray-400 mr-1" />
-                <span className="text-xs text-gray-400">Percentual poupado</span>
+              <div className="flex items-center text-sm text-slate-500">
+                <Activity className="w-4 h-4 mr-1" />
+                <span>Percentual economizado</span>
               </div>
             </CardContent>
           </Card>
@@ -207,15 +210,15 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Pie Chart */}
-          <Card className="glass-card tech-border">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-white flex items-center">
-                <div className="w-2 h-2 rounded-full bg-blue-400 mr-3"></div>
-                Gastos por Categoria
+          <Card className="professional-card professional-shadow">
+            <CardHeader className="border-b border-slate-100 pb-4">
+              <CardTitle className="text-xl font-semibold text-slate-900 heading-secondary">
+                Distribuição de Gastos por Categoria
               </CardTitle>
+              <p className="text-sm text-slate-600">Análise detalhada dos seus gastos</p>
             </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
+            <CardContent className="pt-6">
+              <ResponsiveContainer width="100%" height={320}>
                 <PieChart>
                   <Pie
                     data={pieData}
@@ -223,7 +226,7 @@ export default function Dashboard() {
                     cy="50%"
                     labelLine={false}
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={80}
+                    outerRadius={100}
                     fill="#8884d8"
                     dataKey="value"
                   >
@@ -234,10 +237,10 @@ export default function Dashboard() {
                   <Tooltip
                     formatter={(value) => formatCurrency(Number(value))}
                     contentStyle={{
-                      backgroundColor: "rgba(15, 15, 35, 0.9)",
-                      border: "1px solid rgba(103, 126, 234, 0.2)",
-                      borderRadius: "12px",
-                      color: "white",
+                      backgroundColor: "white",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "8px",
+                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                     }}
                   />
                 </PieChart>
@@ -246,43 +249,43 @@ export default function Dashboard() {
           </Card>
 
           {/* Line Chart */}
-          <Card className="glass-card tech-border">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-white flex items-center">
-                <div className="w-2 h-2 rounded-full bg-purple-400 mr-3"></div>
-                Evolução Mensal
+          <Card className="professional-card professional-shadow">
+            <CardHeader className="border-b border-slate-100 pb-4">
+              <CardTitle className="text-xl font-semibold text-slate-900 heading-secondary">
+                Evolução Mensal das Finanças
               </CardTitle>
+              <p className="text-sm text-slate-600">Tendência de receitas e despesas</p>
             </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
+            <CardContent className="pt-6">
+              <ResponsiveContainer width="100%" height={320}>
                 <LineChart data={monthlyData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="month" stroke="#9CA3AF" />
-                  <YAxis stroke="#9CA3AF" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
+                  <YAxis stroke="#64748b" fontSize={12} />
                   <Tooltip
                     formatter={(value) => formatCurrency(Number(value))}
                     contentStyle={{
-                      backgroundColor: "rgba(15, 15, 35, 0.9)",
-                      border: "1px solid rgba(103, 126, 234, 0.2)",
-                      borderRadius: "12px",
-                      color: "white",
+                      backgroundColor: "white",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "8px",
+                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                     }}
                   />
                   <Line
                     type="monotone"
                     dataKey="income"
-                    stroke="#4facfe"
+                    stroke="#059669"
                     strokeWidth={3}
                     name="Receitas"
-                    dot={{ fill: "#4facfe", strokeWidth: 2, r: 4 }}
+                    dot={{ fill: "#059669", strokeWidth: 2, r: 4 }}
                   />
                   <Line
                     type="monotone"
                     dataKey="expenses"
-                    stroke="#fa709a"
+                    stroke="#dc2626"
                     strokeWidth={3}
                     name="Despesas"
-                    dot={{ fill: "#fa709a", strokeWidth: 2, r: 4 }}
+                    dot={{ fill: "#dc2626", strokeWidth: 2, r: 4 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -292,39 +295,39 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Recent Transactions */}
-          <Card className="glass-card tech-border">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-white flex items-center">
-                <div className="w-2 h-2 rounded-full bg-green-400 mr-3"></div>
-                Últimas Transações
+          <Card className="professional-card professional-shadow">
+            <CardHeader className="border-b border-slate-100 pb-4">
+              <CardTitle className="text-xl font-semibold text-slate-900 heading-secondary">
+                Transações Recentes
               </CardTitle>
+              <p className="text-sm text-slate-600">Últimas movimentações financeiras</p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="space-y-4">
                 {recentTransactions.map((transaction) => (
                   <div
                     key={transaction.id}
-                    className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200"
+                    className="flex items-center justify-between p-4 rounded-lg bg-slate-50 border border-slate-100 hover:bg-slate-100 transition-colors duration-200"
                   >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                        <span className="text-sm font-bold text-blue-400">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 rounded-lg bg-white border border-slate-200 flex items-center justify-center">
+                        <span className="text-sm font-semibold text-slate-700">
                           {transaction.category.charAt(0).toUpperCase()}
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium text-white">{transaction.description}</p>
-                        <p className="text-sm text-gray-400">{transaction.category}</p>
+                        <p className="font-semibold text-slate-900">{transaction.description}</p>
+                        <p className="text-sm text-slate-500">{transaction.category}</p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p
-                        className={`font-bold text-lg ${transaction.type === "income" ? "text-green-400" : "text-red-400"}`}
+                        className={`font-bold text-lg ${transaction.type === "income" ? "text-emerald-600" : "text-red-600"}`}
                       >
                         {transaction.type === "income" ? "+" : "-"}
                         {formatCurrency(transaction.amount)}
                       </p>
-                      <p className="text-sm text-gray-400">{new Date(transaction.date).toLocaleDateString("pt-BR")}</p>
+                      <p className="text-sm text-slate-500">{new Date(transaction.date).toLocaleDateString("pt-BR")}</p>
                     </div>
                   </div>
                 ))}
@@ -333,32 +336,34 @@ export default function Dashboard() {
           </Card>
 
           {/* Goals Progress */}
-          <Card className="glass-card tech-border">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-white flex items-center">
-                <div className="w-2 h-2 rounded-full bg-yellow-400 mr-3"></div>
-                Progresso das Metas
+          <Card className="professional-card professional-shadow">
+            <CardHeader className="border-b border-slate-100 pb-4">
+              <CardTitle className="text-xl font-semibold text-slate-900 heading-secondary">
+                Progresso das Metas Financeiras
               </CardTitle>
+              <p className="text-sm text-slate-600">Acompanhamento dos seus objetivos</p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="space-y-6">
                 {goals.slice(0, 5).map((goal) => {
                   const progress = (goal.currentAmount / goal.targetAmount) * 100
                   return (
-                    <div key={goal.id} className="p-4 rounded-lg bg-white/5 border border-white/10">
-                      <div className="flex justify-between mb-3">
-                        <span className="font-medium text-white">{goal.name}</span>
-                        <span className="text-sm text-blue-400 font-semibold">{progress.toFixed(1)}%</span>
+                    <div key={goal.id} className="p-4 rounded-lg bg-slate-50 border border-slate-100">
+                      <div className="flex justify-between items-center mb-3">
+                        <span className="font-semibold text-slate-900">{goal.name}</span>
+                        <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                          {progress.toFixed(1)}%
+                        </span>
                       </div>
-                      <div className="w-full bg-gray-700 rounded-full h-3 mb-3">
+                      <div className="w-full bg-slate-200 rounded-full h-2 mb-3">
                         <div
-                          className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500 glow-effect"
+                          className="bg-blue-600 h-2 rounded-full transition-all duration-500"
                           style={{ width: `${Math.min(progress, 100)}%` }}
                         />
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-green-400 font-medium">{formatCurrency(goal.currentAmount)}</span>
-                        <span className="text-gray-400">{formatCurrency(goal.targetAmount)}</span>
+                        <span className="text-emerald-600 font-semibold">{formatCurrency(goal.currentAmount)}</span>
+                        <span className="text-slate-500">{formatCurrency(goal.targetAmount)}</span>
                       </div>
                     </div>
                   )

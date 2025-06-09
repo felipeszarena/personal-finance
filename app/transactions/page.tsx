@@ -127,47 +127,40 @@ export default function Transactions() {
     })
   }
 
-  const getCategoryIcon = (categoryName: string) => {
-    const category = categories.find((c) => c.name === categoryName)
-    return category?.icon || "circle"
-  }
-
   const getCategoryColor = (categoryName: string) => {
     const category = categories.find((c) => c.name === categoryName)
-    return category?.color || "#6B7280"
+    return category?.color || "#64748b"
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-50">
       <Navigation />
 
       <div className="p-8 max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-8 space-y-4 lg:space-y-0">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Transações
-            </h1>
-            <p className="text-gray-400 mt-2">Gerencie suas receitas e despesas</p>
+            <h1 className="text-4xl font-bold text-slate-900 heading-primary">Gestão de Transações</h1>
+            <p className="text-slate-600 mt-2 text-lg">Controle completo das suas receitas e despesas</p>
           </div>
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
               <Button
-                className="tech-gradient hover:glow-effect transition-all duration-300"
+                className="professional-gradient text-white professional-shadow"
                 onClick={() => setEditingTransaction(null)}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Nova Transação
               </Button>
             </DialogTrigger>
-            <DialogContent className="glass-card border-white/20 text-white sm:max-w-md">
+            <DialogContent className="professional-card professional-shadow sm:max-w-md">
               <DialogHeader>
-                <DialogTitle className="text-xl font-semibold">
+                <DialogTitle className="text-xl font-semibold text-slate-900">
                   {editingTransaction ? "Editar Transação" : "Nova Transação"}
                 </DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <Label htmlFor="amount" className="text-gray-300">
+                  <Label htmlFor="amount" className="text-slate-700 font-semibold">
                     Valor
                   </Label>
                   <Input
@@ -178,32 +171,32 @@ export default function Transactions() {
                     min="0.01"
                     required
                     defaultValue={editingTransaction?.amount || ""}
-                    className="glass-card border-white/20 text-white"
+                    className="professional-border"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="type" className="text-gray-300">
+                  <Label htmlFor="type" className="text-slate-700 font-semibold">
                     Tipo
                   </Label>
                   <Select name="type" defaultValue={editingTransaction?.type || "expense"}>
-                    <SelectTrigger className="glass-card border-white/20 text-white">
+                    <SelectTrigger className="professional-border">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="glass-card border-white/20">
+                    <SelectContent className="professional-card">
                       <SelectItem value="expense">Despesa</SelectItem>
                       <SelectItem value="income">Receita</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="category" className="text-gray-300">
+                  <Label htmlFor="category" className="text-slate-700 font-semibold">
                     Categoria
                   </Label>
                   <Select name="category" defaultValue={editingTransaction?.category || categories[0].name}>
-                    <SelectTrigger className="glass-card border-white/20 text-white">
+                    <SelectTrigger className="professional-border">
                       <SelectValue placeholder="Selecione uma categoria" />
                     </SelectTrigger>
-                    <SelectContent className="glass-card border-white/20">
+                    <SelectContent className="professional-card">
                       {categories.map((category) => (
                         <SelectItem key={category.name} value={category.name}>
                           {category.name}
@@ -213,7 +206,7 @@ export default function Transactions() {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="description" className="text-gray-300">
+                  <Label htmlFor="description" className="text-slate-700 font-semibold">
                     Descrição
                   </Label>
                   <Textarea
@@ -221,11 +214,11 @@ export default function Transactions() {
                     name="description"
                     required
                     defaultValue={editingTransaction?.description || ""}
-                    className="glass-card border-white/20 text-white"
+                    className="professional-border"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="date" className="text-gray-300">
+                  <Label htmlFor="date" className="text-slate-700 font-semibold">
                     Data
                   </Label>
                   <Input
@@ -234,10 +227,10 @@ export default function Transactions() {
                     type="date"
                     required
                     defaultValue={editingTransaction?.date || new Date().toISOString().split("T")[0]}
-                    className="glass-card border-white/20 text-white"
+                    className="professional-border"
                   />
                 </div>
-                <Button type="submit" className="w-full tech-gradient hover:glow-effect transition-all duration-300">
+                <Button type="submit" className="w-full professional-gradient text-white professional-shadow">
                   {editingTransaction ? "Atualizar" : "Salvar"} Transação
                 </Button>
               </form>
@@ -246,20 +239,20 @@ export default function Transactions() {
         </div>
 
         {/* Filters */}
-        <Card className="glass-card tech-border mb-8">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-white flex items-center">
-              <Filter className="w-5 h-5 mr-2 text-blue-400" />
-              Filtros
+        <Card className="professional-card professional-shadow mb-8">
+          <CardHeader className="border-b border-slate-100 pb-4">
+            <CardTitle className="text-xl font-semibold text-slate-900 heading-secondary flex items-center">
+              <Filter className="w-5 h-5 mr-2 text-blue-600" />
+              Filtros de Pesquisa
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                 <Input
                   placeholder="Buscar por descrição..."
-                  className="pl-10 glass-card border-white/20 text-white"
+                  className="pl-10 professional-border"
                   value={filters.search}
                   onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
                 />
@@ -268,10 +261,10 @@ export default function Transactions() {
                 value={filters.category}
                 onValueChange={(value) => setFilters((prev) => ({ ...prev, category: value }))}
               >
-                <SelectTrigger className="glass-card border-white/20 text-white">
+                <SelectTrigger className="professional-border">
                   <SelectValue placeholder="Categoria" />
                 </SelectTrigger>
-                <SelectContent className="glass-card border-white/20">
+                <SelectContent className="professional-card">
                   <SelectItem value="all-categories">Todas as categorias</SelectItem>
                   {categories.map((category) => (
                     <SelectItem key={category.name} value={category.name}>
@@ -281,31 +274,31 @@ export default function Transactions() {
                 </SelectContent>
               </Select>
               <Select value={filters.type} onValueChange={(value) => setFilters((prev) => ({ ...prev, type: value }))}>
-                <SelectTrigger className="glass-card border-white/20 text-white">
+                <SelectTrigger className="professional-border">
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
-                <SelectContent className="glass-card border-white/20">
+                <SelectContent className="professional-card">
                   <SelectItem value="all-types">Todos os tipos</SelectItem>
                   <SelectItem value="income">Receita</SelectItem>
                   <SelectItem value="expense">Despesa</SelectItem>
                 </SelectContent>
               </Select>
               <div className="relative">
-                <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Calendar className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                 <Input
                   type="date"
                   placeholder="Data inicial"
-                  className="pl-10 glass-card border-white/20 text-white"
+                  className="pl-10 professional-border"
                   value={filters.startDate}
                   onChange={(e) => setFilters((prev) => ({ ...prev, startDate: e.target.value }))}
                 />
               </div>
               <div className="relative">
-                <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Calendar className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                 <Input
                   type="date"
                   placeholder="Data final"
-                  className="pl-10 glass-card border-white/20 text-white"
+                  className="pl-10 professional-border"
                   value={filters.endDate}
                   onChange={(e) => setFilters((prev) => ({ ...prev, endDate: e.target.value }))}
                 />
@@ -317,39 +310,42 @@ export default function Transactions() {
         {/* Transactions List */}
         <div className="space-y-4 mb-8">
           {paginatedTransactions.map((transaction) => (
-            <Card key={transaction.id} className="glass-card tech-border hover:glow-effect transition-all duration-300">
+            <Card
+              key={transaction.id}
+              className="professional-card professional-shadow hover:professional-shadow-lg transition-all duration-200"
+            >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg"
-                      style={{
-                        background: `linear-gradient(135deg, ${getCategoryColor(transaction.category)}40, ${getCategoryColor(transaction.category)}80)`,
-                      }}
+                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg professional-shadow"
+                      style={{ backgroundColor: getCategoryColor(transaction.category) }}
                     >
                       {transaction.category.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white text-lg">{transaction.description}</h3>
-                      <p className="text-sm text-gray-400">{transaction.category}</p>
+                      <h3 className="font-semibold text-slate-900 text-lg">{transaction.description}</h3>
+                      <p className="text-sm text-slate-500 font-medium">{transaction.category}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-6">
                     <div className="text-right">
                       <p
-                        className={`font-bold text-2xl ${transaction.type === "income" ? "text-green-400" : "text-red-400"}`}
+                        className={`font-bold text-2xl ${transaction.type === "income" ? "text-emerald-600" : "text-red-600"}`}
                       >
                         {transaction.type === "income" ? "+" : "-"}
                         {formatCurrency(transaction.amount)}
                       </p>
-                      <p className="text-sm text-gray-400">{new Date(transaction.date).toLocaleDateString("pt-BR")}</p>
+                      <p className="text-sm text-slate-500 font-medium">
+                        {new Date(transaction.date).toLocaleDateString("pt-BR")}
+                      </p>
                     </div>
                     <div className="flex space-x-2">
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleEdit(transaction)}
-                        className="glass-card border-white/20 hover:bg-white/10"
+                        className="professional-border hover:bg-slate-50"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -357,7 +353,7 @@ export default function Transactions() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleDuplicate(transaction)}
-                        className="glass-card border-white/20 hover:bg-white/10"
+                        className="professional-border hover:bg-slate-50"
                       >
                         <Copy className="w-4 h-4" />
                       </Button>
@@ -365,7 +361,7 @@ export default function Transactions() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleDelete(transaction.id)}
-                        className="glass-card border-red-500/20 text-red-400 hover:bg-red-500/10"
+                        className="border-red-200 text-red-600 hover:bg-red-50"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -384,18 +380,18 @@ export default function Transactions() {
               variant="outline"
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="glass-card border-white/20 text-white hover:bg-white/10"
+              className="professional-border hover:bg-slate-50"
             >
               Anterior
             </Button>
-            <span className="flex items-center px-6 py-2 glass-card border-white/20 rounded-lg text-white">
+            <span className="flex items-center px-6 py-2 professional-card professional-border rounded-lg text-slate-700 font-semibold">
               Página {currentPage} de {totalPages}
             </span>
             <Button
               variant="outline"
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="glass-card border-white/20 text-white hover:bg-white/10"
+              className="professional-border hover:bg-slate-50"
             >
               Próxima
             </Button>
